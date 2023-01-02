@@ -26,5 +26,15 @@ describe("MyNft", function () {
         );
       });
     });
+
+    describe("safeMint", function () {
+      it("safeMint", async function () {
+        const { myNft } = await loadFixture(deployMyNftFixture);
+
+        const to = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+        const tokenId = await myNft.safeMint(to)
+        console.log("aaa", await myNft.ownerOf(1), tokenId)
+      });
+    });
   });
 });
