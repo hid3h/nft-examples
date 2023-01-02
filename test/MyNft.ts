@@ -17,35 +17,22 @@ describe("MyNft", function () {
   }
 
   describe("MyNfts", function () {
-    describe("Hello", function () {
-      it("Hello", async function () {
-        const { myNft } = await loadFixture(deployMyNftFixture);
+    it("いろいろ", async function () {
+      const { myNft } = await loadFixture(deployMyNftFixture);
 
-        expect(await myNft.hello()).to.equal(
-          "Hello"
-        );
-      });
-    });
+      const accounts = await ethers.getSigners();
 
-    describe("safeMint", function () {
-      it("safeMint", async function () {
-        const { myNft } = await loadFixture(deployMyNftFixture);
+      const account0Address = accounts[0].address
+      await myNft.safeMint(account0Address)
 
-        const accounts = await ethers.getSigners();
+      expect(await myNft.ownerOf(1)).to.equal(account0Address)
+      expect(await myNft.balanceOf(account0Address)).to.equal(1)
 
-        const account0Address = accounts[0].address
-        await myNft.safeMint(account0Address)
+      const account1Address = accounts[1].address
+      await myNft.safeMint(account1Address)
 
-        expect(await myNft.ownerOf(1)).to.equal(account0Address)
-        expect(await myNft.balanceOf(account0Address)).to.equal(1)
-
-        const account1Address = accounts[1].address
-        await myNft.safeMint(account1Address)
-
-        expect(await myNft.ownerOf(2)).to.equal(account1Address)
-        expect(await myNft.balanceOf(account1Address)).to.equal(1)
-
-      });
+      expect(await myNft.ownerOf(2)).to.equal(account1Address)
+      expect(await myNft.balanceOf(account1Address)).to.equal(1)
     });
   });
 });

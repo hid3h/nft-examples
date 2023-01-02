@@ -18,11 +18,6 @@ contract MyNft is
 
   }
 
-
-  function hello() public pure returns (string memory) {
-    return "Hello";
-  }
-
   function safeMint(address to)
     external
   {
