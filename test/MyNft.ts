@@ -31,9 +31,20 @@ describe("MyNft", function () {
       it("safeMint", async function () {
         const { myNft } = await loadFixture(deployMyNftFixture);
 
-        const to = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
-        const tokenId = await myNft.safeMint(to)
-        console.log("aaa", await myNft.ownerOf(1), tokenId)
+        const accounts = await ethers.getSigners();
+
+        const account0Address = accounts[0].address
+        await myNft.safeMint(account0Address)
+
+        expect(await myNft.ownerOf(1)).to.equal(account0Address)
+        expect(await myNft.balanceOf(account0Address)).to.equal(1)
+
+        const account1Address = accounts[1].address
+        await myNft.safeMint(account1Address)
+
+        expect(await myNft.ownerOf(2)).to.equal(account1Address)
+        expect(await myNft.balanceOf(account1Address)).to.equal(1)
+
       });
     });
   });

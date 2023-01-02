@@ -9,10 +9,8 @@ import "../node_modules/@openzeppelin/contracts/utils/Counters.sol";
 contract MyNft is
   ERC721
 {
-  // uint public unlockTime;
-  // address payable public owner;
-
-  // event Withdrawal(uint amount, uint when);
+  using Counters for Counters.Counter;
+  Counters.Counter private _tokenIdCounter;
 
   constructor()
     ERC721("test name", "test symbol")
@@ -20,8 +18,6 @@ contract MyNft is
 
   }
 
-  using Counters for Counters.Counter;
-  Counters.Counter private _tokenIdCounter;
 
   function hello() public pure returns (string memory) {
     return "Hello";
