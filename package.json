@@ -1,10 +1,13 @@
 {
-  "name": "nft-sandbox",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:hid3h/nft-sandbox.git",
-  "author": "hid3h <razyetts@hotmail.co.jp>",
-  "license": "MIT",
+  "name": "app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
   "devDependencies": {
     "@ethersproject/abi": "^5.4.7",
     "@ethersproject/providers": "^5.4.7",
@@ -17,16 +20,22 @@
     "@typechain/hardhat": "^6.1.2",
     "@types/chai": "^4.2.0",
     "@types/mocha": "^9.1.0",
-    "@types/node": ">=12.0.0",
     "chai": "^4.2.0",
     "hardhat": "^2.12.5",
     "hardhat-gas-reporter": "^1.0.8",
     "solidity-coverage": "^0.8.0",
     "ts-node": ">=8.0.0",
-    "typechain": "^8.1.0",
-    "typescript": ">=4.5.0"
+    "typechain": "^8.1.0"
   },
   "dependencies": {
+    "@next/font": "13.1.1",
+    "@types/node": "18.11.18",
+    "@types/react": "18.0.26",
+    "@types/react-dom": "18.0.10",
+    "next": "13.1.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "4.9.4",
     "@openzeppelin/contracts": "^4.8.0",
     "ethers": "^5.7.2"
   }
