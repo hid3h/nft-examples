@@ -33,6 +33,9 @@ describe("MyNft", function () {
 
       expect(await myNft.ownerOf(2)).to.equal(account1Address)
       expect(await myNft.balanceOf(account1Address)).to.equal(1)
+
+      console.log(await myNft.getAllAddress());
+      console.log(await myNft.getAllApproved());
     });
   });
 });
