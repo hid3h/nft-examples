@@ -3,28 +3,21 @@
 
 pragma solidity ^0.8.0;
 
-import "./IERC721.sol";
-import "./IERC721Receiver.sol";
-import "./extensions/IERC721Metadata.sol";
-import "../../utils/Address.sol";
-import "../../utils/Context.sol";
-import "../../utils/Strings.sol";
-import "../../utils/introspection/ERC165.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+import "@openzeppelin/contracts/utils/Address.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
 /**
  * @dev Implementation of https://eips.ethereum.org/EIPS/eip-721[ERC721] Non-Fungible Token Standard, including
  * the Metadata extension, but not including the Enumerable extension, which is available separately as
  * {ERC721Enumerable}.
  */
-contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
+contract ERC721 is Context, ERC165, IERC721 {
     using Address for address;
     using Strings for uint256;
-
-    // Token name
-    string private _name;
-
-    // Token symbol
-    string private _symbol;
 
     // Mapping from token ID to owner address
     mapping(uint256 => address) private _owners;
@@ -39,20 +32,11 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     mapping(address => mapping(address => bool)) private _operatorApprovals;
 
     /**
-     * @dev Initializes the contract by setting a `name` and a `symbol` to the token collection.
-     */
-    constructor(string memory name_, string memory symbol_) {
-        _name = name_;
-        _symbol = symbol_;
-    }
-
-    /**
      * @dev See {IERC165-supportsInterface}.
      */
     function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
         return
             interfaceId == type(IERC721).interfaceId ||
-            interfaceId == type(IERC721Metadata).interfaceId ||
             super.supportsInterface(interfaceId);
     }
 
@@ -71,39 +55,6 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
         address owner = _ownerOf(tokenId);
         require(owner != address(0), "ERC721: invalid token ID");
         return owner;
-    }
-
-    /**
-     * @dev See {IERC721Metadata-name}.
-     */
-    function name() public view virtual override returns (string memory) {
-        return _name;
-    }
-
-    /**
-     * @dev See {IERC721Metadata-symbol}.
-     */
-    function symbol() public view virtual override returns (string memory) {
-        return _symbol;
-    }
-
-    /**
-     * @dev See {IERC721Metadata-tokenURI}.
-     */
-    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
-        _requireMinted(tokenId);
-
-        string memory baseURI = _baseURI();
-        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : "";
-    }
-
-    /**
-     * @dev Base URI for computing {tokenURI}. If set, the resulting URI for each
-     * token will be the concatenation of the `baseURI` and the `tokenId`. Empty
-     * by default, can be overridden in child contracts.
-     */
-    function _baseURI() internal view virtual returns (string memory) {
-        return "";
     }
 
     /**
@@ -283,40 +234,6 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
         emit Transfer(address(0), to, tokenId);
 
         _afterTokenTransfer(address(0), to, tokenId, 1);
-    }
-
-    /**
-     * @dev Destroys `tokenId`.
-     * The approval is cleared when the token is burned.
-     * This is an internal function that does not check if the sender is authorized to operate on the token.
-     *
-     * Requirements:
-     *
-     * - `tokenId` must exist.
-     *
-     * Emits a {Transfer} event.
-     */
-    function _burn(uint256 tokenId) internal virtual {
-        address owner = ERC721.ownerOf(tokenId);
-
-        _beforeTokenTransfer(owner, address(0), tokenId, 1);
-
-        // Update ownership in case tokenId was transferred by `_beforeTokenTransfer` hook
-        owner = ERC721.ownerOf(tokenId);
-
-        // Clear approvals
-        delete _tokenApprovals[tokenId];
-
-        unchecked {
-            // Cannot overflow, as that would require more tokens to be burned/transferred
-            // out than the owner initially received through minting and transferring in.
-            _balances[owner] -= 1;
-        }
-        delete _owners[tokenId];
-
-        emit Transfer(owner, address(0), tokenId);
-
-        _afterTokenTransfer(owner, address(0), tokenId, 1);
     }
 
     /**

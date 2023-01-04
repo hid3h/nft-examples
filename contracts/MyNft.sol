@@ -3,7 +3,7 @@ pragma solidity ^0.8.9;
 
 // Uncomment this line to use console.log
 import "hardhat/console.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "./ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract MyNft is
@@ -11,12 +11,6 @@ contract MyNft is
 {
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIdCounter;
-
-  constructor()
-    ERC721("test name", "test symbol")
-  {
-
-  }
 
   function safeMint(address to)
     external
