@@ -3,12 +3,12 @@ require('dotenv').config();
 
 const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY;
 const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || "";
-const GOERLI_PRIVATE_KEY = process.env.GOERLI_PRIVATE_KEY || "";
+const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
 
 const contract = require("../artifacts/contracts/MyNft.sol/MyNft.json")
 
-const provider = new ethers.providers.AlchemyProvider("goerli", ALCHEMY_API_KEY)
-const signer = new ethers.Wallet(GOERLI_PRIVATE_KEY, provider)
+const provider = new ethers.providers.AlchemyProvider("mainnet", ALCHEMY_API_KEY)
+const signer = new ethers.Wallet(PRIVATE_KEY, provider)
 const abi = contract.abi;
 
 const myNftContract = new ethers.Contract(CONTRACT_ADDRESS, abi, signer);

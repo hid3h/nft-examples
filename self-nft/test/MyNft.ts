@@ -16,19 +16,36 @@ describe("MyNft", function () {
     return { myNft, owner, otherAccount };
   }
 
-  describe("mint", () => {
-    it("", async () => {
-      const { myNft, owner, otherAccount } = await loadFixture(deployFixture);
+  it("Should have correct token name and symbol", async () => {
+    const { myNft } = await loadFixture(deployFixture);
 
-      await expect(myNft.connect(otherAccount).safeMint(otherAccount.address, 0)).to.be.revertedWith(
-        "Ownable: caller is not the owner"
-      )
+    expect(await myNft.name()).to.equal("HideGithubNFT");
+    expect(await myNft.symbol()).to.equal("HIDEGC");
+  });
 
-      await myNft.connect(owner).safeMint(owner.address, 0);
+  it("Should mint a new token correctly", async () => {
+    const { myNft, owner, otherAccount } = await loadFixture(deployFixture);
 
-      expect(await myNft.balanceOf(owner.address)).to.eq(1)
-      expect(await myNft.ownerOf(0)).to.eq(owner.address)
-      expect(await myNft.tokenURI(0)).to.eq("https://hid3h.github.io/assets/nft/metadata/0")
-    })
+    const tokenId = 1;
+    await myNft.connect(owner).safeMint(otherAccount.address, tokenId);
+    expect(await myNft.ownerOf(tokenId)).to.equal(otherAccount.address);
+  });
+
+  it("Should only allow the owner to mint tokens", async () => {
+    const { myNft, otherAccount } = await loadFixture(deployFixture);
+
+    const tokenId = 1;
+    await expect(myNft.connect(otherAccount).safeMint(otherAccount.address, tokenId)).to.be.revertedWith(
+      "Ownable: caller is not the owner"
+    )
+  });
+
+  it("Should correctly set token URI after minting", async () => {
+    const { myNft, owner, otherAccount } = await loadFixture(deployFixture);
+
+    const tokenId = 1;
+    await myNft.connect(owner).safeMint(otherAccount.address, tokenId);
+    const tokenURI = await myNft.tokenURI(tokenId);
+    expect(tokenURI).to.equal("https://hid3h.github.io/assets/nft/metadata/1");
   });
 });
