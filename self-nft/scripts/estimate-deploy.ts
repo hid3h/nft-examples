@@ -17,7 +17,7 @@ async function main() {
   console.log(`Current base fee: ${baseFee} Gwei`);
 
   // Set the priority fee (tip)
-  const priorityFee = ethers.utils.parseUnits("1", "gwei");
+  const priorityFee = ethers.utils.parseUnits("0.5", "gwei");
   console.log(`Priority fee (tip): ${priorityFee} Gwei`);
 
   // Calculate the total gas price (base fee + priority fee)
