@@ -8,8 +8,9 @@ const provider = ethers.provider;
 const signer = provider.getSigner();
 const abi = contract.abi;
 
+const contractAddress = "contract-address"
 const myNftContract = new ethers.Contract(
-  process.env.GOERLI_CONTRACT_ADDRESS || "",
+  contractAddress,
   abi,
   signer
 );
