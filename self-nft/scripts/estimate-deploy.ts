@@ -1,5 +1,5 @@
 // npx hardhat run scripts/my-script.js --network goerli
-import { ethers, network } from "hardhat";
+import { ethers } from "hardhat";
 
 async function main() {
   const provider = ethers.provider;
@@ -7,9 +7,7 @@ async function main() {
   // Estimate gas for deployment
   const MyNft = await ethers.getContractFactory("MyNft");
   const deploymentTx = MyNft.getDeployTransaction();
-  const estimatedDeploymentGas = await provider.estimateGas(
-    deploymentTx
-  );
+  const estimatedDeploymentGas = await provider.estimateGas(deploymentTx);
   console.log(`Estimated gas for deployment: ${estimatedDeploymentGas}`);
 
   // Get the current base fee
