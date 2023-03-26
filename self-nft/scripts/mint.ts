@@ -16,7 +16,7 @@ const myNftContract = new ethers.Contract(
 
 async function main() {
   const to = await signer.getAddress();
-  const tokenId = 1;
+  const tokenId = 0;
   const nftTxn = await myNftContract.safeMint(to, tokenId);
 
   await nftTxn.wait();
