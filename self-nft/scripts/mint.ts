@@ -15,12 +15,12 @@ const myNftContract = new ethers.Contract(CONTRACT_ADDRESS, abi, signer);
 
 async function main() {
   const to = signer.address
-  const tokenId = 0
+  const tokenId = 1
   const nftTxn = await myNftContract.safeMint(to, tokenId)
 
   await nftTxn.wait()
 
-  console.log(`NFT Minted! Check it out at: https://goerli.etherscan.io/tx/${nftTxn.hash}`)
+  console.log(`NFT Minted! Check it out at: https://etherscan.io/tx/${nftTxn.hash}`)
 }
 
 // We recommend this pattern to be able to use async/await everywhere

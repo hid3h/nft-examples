@@ -1,3 +1,4 @@
+// npx hardhat run scripts/deploy.ts --network
 import { ethers } from "hardhat";
 
 async function main() {
