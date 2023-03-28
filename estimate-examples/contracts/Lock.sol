@@ -4,31 +4,32 @@ pragma solidity ^0.8.9;
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
 
-contract Lock {
-    uint public unlockTime;
-    address payable public owner;
+import "@openzeppelin/contracts/utils/Multicall.sol";
 
-    event Withdrawal(uint amount, uint when);
+contract Lock is Multicall {
+    mapping (string => string) private _store;
+    string[] private _keys;
 
-    constructor(uint _unlockTime) payable {
-        require(
-            block.timestamp < _unlockTime,
-            "Unlock time should be in the future"
-        );
-
-        unlockTime = _unlockTime;
-        owner = payable(msg.sender);
+    function set(string calldata key, string calldata value) public {
+        if (bytes(_store[key]).length == 0) {
+            _keys.push(key);
+        }
+        _store[key] = value;
     }
 
-    function withdraw() public {
-        // Uncomment this line, and the import of "hardhat/console.sol", to print a log in your terminal
-        // console.log("Unlock time is %o and block timestamp is %o", unlockTime, block.timestamp);
+    function get(string calldata key) public view returns (string memory) {
+        return _store[key];
+    }
 
-        require(block.timestamp >= unlockTime, "You can't withdraw yet");
-        require(msg.sender == owner, "You aren't the owner");
+    function keys() public view returns (string[] memory) {
+        return _keys;
+    }
 
-        emit Withdrawal(address(this).balance, block.timestamp);
-
-        owner.transfer(address(this).balance);
+    function values() public view returns (string[] memory) {
+        string[] memory _values = new string[](_keys.length);
+        for (uint i = 0; i < _keys.length; i++) {
+            _values[i] = _store[_keys[i]];
+        }
+        return _values;
     }
 }
